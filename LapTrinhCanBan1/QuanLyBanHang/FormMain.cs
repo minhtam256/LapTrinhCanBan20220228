@@ -12,6 +12,13 @@ namespace QuanLyBanHang
     {
         public FormMain()
         {
+            Form fDangNhap = new Form1();
+            var isLogin = fDangNhap.ShowDialog();
+            // Dang nhap khong thanh cong thi thoat 
+            if (isLogin != DialogResult.OK)
+            {
+                Close();
+            }
             InitializeComponent();
         }
 
@@ -28,7 +35,22 @@ namespace QuanLyBanHang
                 double a = double.Parse(txtSoA.Text.Trim());
                 double b = double.Parse(txtSoB.Text.Trim());
                 double c = double.Parse(txtSoC.Text.Trim());
-                string nghiem = PhuongTrinhBac2(a,b,c);
+                CPTB2 phuongTrinhBac2 = new CPTB2(a,b,c);
+                // dong 38 la object
+
+                //phuongTrinhBac2.a = a;
+                //phuongTrinhBac2.b = b;
+                //phuongTrinhBac2.c = c;
+                // 3 cai tren thay vao dongf object 
+
+                // a sau = la tu ham o tren
+                // .a la trong CPTB2
+                // MessageBox.Show(phuongTrinhBac2.a.ToString());
+                // tostring bien so 6 thanh chuoi , parrse nguoclai
+                // viet hoa la ham, thuong la bien
+                //phuongTrinhBac2.GiaiPhuongTrinh();
+                // string nghiem = PhuongTrinhBac2(a,b,c);
+                string nghiem = phuongTrinhBac2.GiaiPhuongTrinh();
                 txtKetQua.Text = nghiem;
             }
             catch (Exception ex)
@@ -40,20 +62,22 @@ namespace QuanLyBanHang
         private string PhuongTrinhBac2(double a, double b, double c)
         {
             double d = Math.Pow(b, 2) - 4 * a * c;
-            if (d < 0) {
+            if (d < 0)
+            {
                 return string.Format("PT Vô Nghiệm");
             }
             double x1 = (-b + Math.Sqrt(d)) / (2 * a);
             double x2 = (-b - Math.Sqrt(d)) / (2 * a);
-            return string.Format("X1= {0:f2} ,\n X2={1:f2}",x1,x2);
+            return string.Format("X1= {0:f2} ,\n X2={1:f2}", x1, x2);
 
         }
 
         private void CheckInput()
         {
             #region Kiểm tra đã nhap data chưa
-            string soA =  txtSoA.Text.Trim();
-            if (soA == "") {
+            string soA = txtSoA.Text.Trim();
+            if (soA == "")
+            {
                 txtSoA.Focus();
                 throw new Exception("Số A Nhập Không Hợp Lệ");
             }
@@ -71,8 +95,9 @@ namespace QuanLyBanHang
             }
             #endregion
             #region Kiem tra nhap có phải là số không
-            double a,b,c;
-            if (double.TryParse(soA, out a) ==false) {
+            double a, b, c;
+            if (double.TryParse(soA, out a) == false)
+            {
                 txtSoA.Focus();
                 txtSoA.SelectAll();
                 throw new Exception("Số A Nhập Không Hợp Lệ");
@@ -100,6 +125,11 @@ namespace QuanLyBanHang
             txtSoB.Text = "";
             txtSoC.Text = "";
             txtKetQua.Text = "";
+        }
+
+        private void FormMain_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
